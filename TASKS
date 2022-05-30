@@ -8,11 +8,13 @@
   - Array Accesses
   - Sorting progression
   
-* Sorting Algorithyms
+* Sorting Algorithms
   ✅ Bubble Sort
   - Selection Sort
   - Quick Sort
   - Insertion Sort
+  - Merge Sort
+  - Cocktail Shaker Sort
   
 * MIDI Java Implementation
   - beep everytime array is changed
