@@ -2,26 +2,29 @@
                   Tasks and Goals 
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
+ Naman's tasks:
+  - Make a sorting algorithm selection
+  - Beep
+  - Speed Selection
+  - Make window size 360, move bars up 20 pixels
+  - Gnome Sort
+  - Randomize 
+ Evan's tasks:
+  - Merge Sort
+  - Heap Sort
+  - Number of elements selection
+  - Comparisons
+  - LSD sort
+  - Comment on GUI
+  - Insertion sort colour optimization
+  
+ Together tasks:
+  - Look over/Comment all the code
+  - Different colour themes
+  - Slideshow
+  - Understand all unknown code
 ✅ Add HUD with:
   - [ ] Sorting algorithym
   - Array Accesses
   - Sorting progression
   
-* Sorting Algorithms
-  ✅ Bubble Sort
-  - Selection Sort
-  - Quick Sort
-  - Insertion Sort
-  - Merge Sort
-  - Cocktail Shaker Sort
-  
-* MIDI Java Implementation
-  - beep everytime array is changed
-
-LIST:
-
-Quick Sort
-Gnome Sort
-Cocktail Sort
-Beep
