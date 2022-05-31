@@ -3,7 +3,8 @@
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - 
  Naman's tasks:
-  - Make a sorting algorithm selection
+ ✅ Bubble sort
+  - [ ] Make a sorting algorithm selection
   - Beep
   - Speed Selection
   - Make window size 360, move bars up 20 pixels
@@ -16,8 +17,7 @@
   - Comparisons
   - LSD sort
   - Comment on GUI
-  - Insertion sort colour optimization
-  
+  - Fix insertion colour issue
  Together tasks:
   - Look over/Comment all the code
   - Different colour themes
