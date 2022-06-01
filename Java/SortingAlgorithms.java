@@ -342,6 +342,10 @@ class SortingAlgorithms
               {
                 int j = i-1;
                 int k = i;
+                if (k==128)
+                  {
+                    break;
+                  }
                 if (i==Main.array.length)
                 {
                   try
@@ -356,7 +360,7 @@ class SortingAlgorithms
                   System.out.println(" Sorted!");
                   ((Timer) e.getSource()).stop();
                 }
-                while (Main.array[k]<Main.array[j])
+                while (k<128&&Main.array[k]<Main.array[j])
                 {
                   Main.swap[k] = 2;
                   Main.swap[j] = 2;
