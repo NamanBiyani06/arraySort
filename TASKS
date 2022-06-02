@@ -4,16 +4,21 @@
 - - - - - - - - - - - - - - - - - - - - - - - - - - 
  Naman's tasks:
  ✅ Bubble sort
+ ✅ Cocktail sort
+ ✅ Quick sort
   - Make a sorting algorithm selection
-  - Beep
+  - Beep (functioning delay)
+ ✅ Get sound working
   - Speed Selection
   - Make window size 360, move bars up 20 pixels
   - Gnome Sort
   - Randomize 
-  ✅ Gradient/Different colours for elements
+ ✅ Gradient/Different colours for elements
  Evan's tasks:
+ ✅ Insertion sort
+ ✅ Selection sort
   - Pancake Sort
-  - Merge Sort
+ ✅ Merge Sort
   - Heap Sort
   - Number of elements selection
   - Comparisons
@@ -21,9 +26,9 @@
   - Comment on GUI
   - Mute all/some sound
   - Different pitch sounds?
-  ✅ Fix insertion colour issue
+ ✅ Fix insertion colour issue
  Together tasks:
-  ✅ Separate code into classes
+ ✅ Separate code into classes
   - Look over/Comment all the code
   - Different colour themes
   - Slideshow
