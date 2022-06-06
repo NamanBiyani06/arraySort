@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.sound.sampled.*;
 import javax.swing.event.*;
+import java.awt.Color;
 
 class Main {
 
@@ -29,6 +30,7 @@ class Main {
   static int arrayAccesses = 0; 
   static String sortType;
   static String sortProgress = "Sort in Progress";
+  static String colourTheme;
   
 
   public static JPanel panel; 
@@ -36,15 +38,35 @@ class Main {
   //public static JSlider slider;
 
   //static JSpinner spinner;
+
+  public static void numberSpinner()
+  {
+    JFrame f=new JFrame("Number of Elements");    
+    SpinnerModel value =  
+             new SpinnerNumberModel(128, //initial value  
+                10, //minimum value  
+                1500, //maximum value  //SHIBA
+                1); //step  
+    JSpinner spinner = new JSpinner(value);   
+            spinner.setBounds(100,100,50,30);    
+            f.add(spinner);    
+            f.setSize(300,300);    
+            f.setLayout(null);    
+            f.setVisible(true);     
+  }
   
-  public int[] arrayRandomize(int[] array)
+  public int[] arrayRandomize(int[] array) throws InterruptedException
   {
     //setting the elements of the array to ordered numbers
     for(int i = 0; i<array.length; i++)
       {
         array[i] = i+1;
       }
+    panel.paintImmediately(panel.getBounds());
+    Thread.sleep(1000);
 
+    sortType = "Randomizing";
+    sortProgress = "Randomizing";
     //randomizing
     Random rand = new Random();  
  
@@ -54,9 +76,13 @@ class Main {
 		    int temp = array[i];
 		    array[i] = array[position];
 		    array[position] = temp;
+        panel.paintImmediately(panel.getBounds());
+        Thread.sleep(5);
 		  }
 
     System.out.println(Arrays.toString(array));
+
+    Thread.sleep(3000);
 
     panel.repaint();
  
@@ -100,21 +126,26 @@ class Main {
         String white = new String("#FFFFFF");
         String blue = new String("#00FFFF");
 
-        
-        int gradient = (0xffCC33FF - ((i/7) * 0x110000));
-
-        String stringGradient = String.valueOf(gradient);
-        
-        if(array[i]*2 == 0)
+        double jump = 360.0/(50000*1.0);
+        Color[] colors = new Color[128];
+        for(int j = 0; j< array.length; j++)
           {
-            System.out.println("L");
+            colors[j] = Color.getHSBColor((float) ((jump*j)), 1.0f, 1.0f );
           }
-        //testing rectangle
-        g2.setColor(Color.decode(stringGradient));
+
+        //setting color based on user input
+        if(colourTheme != null && colourTheme.equals("White"))
+        {
+          g2.setColor(Color.decode(white));
+        }
+        else{
+          g2.setColor(colors[i]);
+        }
+        
         g2.fillRect(i*4, 360 - array[i]*2, 3, array[i]*2); 
-        //adding white border
+        //adding black border
         g2.setColor(Color.decode(black));
-        g2.drawRect(i*4-1, 360 - array[i]*2-1, 5, array[i]*2);
+        g2.drawRect(i*4-1, 360 - array[i]*2-1, 4, array[i]*2);
         
 
         if(swap[i] == 2)
@@ -127,7 +158,7 @@ class Main {
           g2.fillRect(i*4, 360 - array[i]*2, 3, array[i]*2);
           //adding white border
           g2.setColor(Color.decode(black));
-          g2.drawRect(i*4-1, 360 - array[i]*2-1, 5, array[i]*2);
+          g2.drawRect(i*4-1, 360 - array[i]*2-1, 4, array[i]*2);
         }
         else if(swap[i] == 3)
         {
@@ -135,7 +166,7 @@ class Main {
           g2.fillRect(i*4, 360 - array[i]*2, 3, array[i]*2);
           //adding white border
           g2.setColor(Color.decode(black));
-          g2.drawRect(i*4-1, 360 - array[i]*2-1, 5, array[i]*2);
+          g2.drawRect(i*4-1, 360 - array[i]*2-1, 4, array[i]*2);
         }
         else if(swap[i] == 4)
         {
@@ -143,7 +174,7 @@ class Main {
           g2.fillRect(i*4, 360 - array[i]*2, 3, array[i]*2);
           //adding white border
           g2.setColor(Color.decode(black));
-          g2.drawRect(i*4-1, 360 - array[i]*2-1, 5, array[i]*2);
+          g2.drawRect(i*4-1, 360 - array[i]*2-1, 4, array[i]*2);
         }
         
 
@@ -155,17 +186,18 @@ class Main {
     Graphics2D g2 = (Graphics2D) g;
     
     String white = new String("#FFFFFF");
+    g.setFont(new Font("Courier", Font.PLAIN, 11)); 
     
     g.setColor(Color.decode(white));
     
     //drawing sorting method
-    g.drawString(sortType + "  -", 10, 20);
+    g.drawString(sortType + "", 10, 20);
     
     //drawing array accesses
-    g.drawString("Array Accesses: " + arrayAccesses + "  -", 103, 20);
+    g.drawString("Array Accesses: " + arrayAccesses, 10, 40);
 
     //drawing sorting progress
-    g.drawString(sortProgress, 254, 20);
+    g.drawString(sortProgress, 10, 60);
   }
 
   //main in which I can use static variables
@@ -190,45 +222,11 @@ class Main {
     panel.setBackground(Color.black);
     f.getContentPane().add(panel);
     panel.validate();
+    //f.pack();
+    f.setLocationRelativeTo(null);
+    f.setVisible(true);
 
-    /*
-    String[] sortingTypes = {"Bubble Sort", "Insertion Sort", "Quick Sort", "Selection Sort", "Bogo Sort"};
 
-    
-    spinner = new JSpinner(new SpinnerListModel(sortingTypes));
-    spinner.setBounds(10, 10, 20, 40);
-    panel.setLayout(null);
-    f.add(spinner);
-    */
-    
-
-    //NOTE - Could not figure out how to set the position of JSlider
-   /* 
-    //creating a slider to control the speed
-    slider = new JSlider(0, 100, 50);
-    slider.setPaintTrack(true);
-    slider.setPaintTicks(true);
-    slider.setPaintLabels(true);
- 
-    // set spacing
-    slider.setMajorTickSpacing(50);
-    slider.setMinorTickSpacing(5);
-
-    //making panel vertical 
-    slider.setOrientation(SwingConstants.VERTICAL);
-
-    //adding slider to panel
-    panel.add(slider, BorderLayout.SOUTH);
-    
-*/
-
-    
-
-    //randomizing and setting the arrays
-    array = arrayRandomize(array);
-    swap = swapSet(swap);
-    arraySorted = setArray(arraySorted);
-    panel.repaint();
 
     //calling methods from EDT
     SwingUtilities.invokeLater(new Runnable()
@@ -236,22 +234,58 @@ class Main {
       @Override
       public void run()
       {
-        try
-          {
-            //Sorting Algorithms
-            //SortingAlgorithms.bubbleSort();
-            //SortingAlgorithms.selectionSort();
-            SortingAlgorithms.insertionSort();
-            //SortingAlgorithms.quickSort(0, 127);
-            //SortingALgorithms.mergeSort(array, 0, 127);
-            //SortingAlgorithms.bogoSort();
-            //SortingAlgorithms.cocktailSort();
-            arrayCheck(); 
-          }
-        catch(InterruptedException e)
-          {
-            e.printStackTrace();
-          }
+       try
+         {
+           //put in method later
+           Object[] AlgoOptions = {"Bubble Sort", "Selection Sort", "Insertion Sort", "Quick Sort", "Merge Sort", "Cocktail Sort", "Bogo Sort"};
+    Object AlgoChoice = JOptionPane.showInputDialog(null, "Select an Algorithm", "Algorithm Selection", JOptionPane.ERROR_MESSAGE, null, AlgoOptions, AlgoOptions[0]); 
+           String strAlgoChoice = (String) AlgoChoice;
+
+           Object[] colourThemes = {"White", "Rainbow"};
+          colourTheme = (String) JOptionPane.showInputDialog(null, "Select a Colour Theme", "Theme Selection", JOptionPane.ERROR_MESSAGE, null, colourThemes, colourThemes[0]); 
+           
+           //randomizing and setting the arrays
+            array = arrayRandomize(array);
+            swap = swapSet(swap);
+            arraySorted = setArray(arraySorted);
+            panel.repaint();
+
+            sortProgress = "Sort in Progress";
+//            //Sorting Algorithms
+           if(strAlgoChoice.equals("Bubble Sort"))
+           {
+             SortingAlgorithms.bubbleSort();
+           } 
+           else if(strAlgoChoice.equals("Selection Sort"))
+           {
+             SortingAlgorithms.selectionSort();
+           }
+           else if(strAlgoChoice.equals("Insertion Sort"))
+           {
+             SortingAlgorithms.insertionSort();
+           }
+           else if(strAlgoChoice.equals("Quick Sort"))
+           {
+             SortingAlgorithms.quickSort(0, 127);
+           }
+           else if(strAlgoChoice.equals("Merge Sort"))
+           {
+             SortingAlgorithms.mergeSort(array, 0, 127); 
+           }
+           else if(strAlgoChoice.equals("Cocktail Sort"))
+           {
+             SortingAlgorithms.cocktailSort();
+           }
+           else if(strAlgoChoice.equals("Bogo Sort"))
+           {
+             SortingAlgorithms.bogoSort();
+           } 
+           
+         }
+       catch(InterruptedException e)
+         {
+           e.printStackTrace();
+         }
       }
     });
   }
@@ -278,7 +312,7 @@ class Main {
 
   public static void arrayCheck() throws InterruptedException
   {
-    System.out.println("wowee");
+    System.out.println("checking array like rnrn");
     
     for(int i = 0; i<array.length; i++)
       {
@@ -291,26 +325,17 @@ class Main {
         }
       }
   }
-  
-/*
-  //sound effect when sorting
-  public static void beep() throws Exception
-  {
-    try(File file = new File("beep.wav")){
-        AudioInputStream audioStream = AudioSystem.getAudioInputStream(file);
+public static void beep(String filename)
+{
+    try
+    {
         Clip clip = AudioSystem.getClip();
-        clip.open(audioStream);
-    
+        clip.open(AudioSystem.getAudioInputStream(new File(filename)));
         clip.start();
-    
-        Thread.sleep(clip.getMicrosecondLength()/1000);
-      }
-    catch(Exception e)
-      {
-        e.printStackTrace();
-      }
-
     }
-*/
-  
+    catch (Exception exc)
+    {
+        exc.printStackTrace(System.out);
+    }
 }
+  }
