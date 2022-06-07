@@ -7,25 +7,25 @@
  ✅ Cocktail sort
  ✅ Quick sort
  ✅ Make a sorting algorithm selection
-  - Beep (functioning delay)
+ ✅ Make a colour theme selection
+ ✅ Beep (functioning delay)
  ✅ Get sound working
-  - Speed Selection
-  - Make window size 360, move bars up 20 pixels
   - Gnome Sort
  ✅ Randomize 
  ✅ Gradient/Different colours for elements
+ ✅ Make rainbow theme
  Evan's tasks:
  ✅ Insertion sort
  ✅ Selection sort
-  - Pancake Sort
+  - Pancake Sort ?
  ✅ Merge Sort
-  - Heap Sort
+  - Heap Sort ?
  ✅ Number of elements selection
-  - Comparisons
-  - LSD sort
-  - Comment on GUI
- ✅ Mute all/some sound
-  - Different pitch sounds?
+  - Comparisons ?
+  - LSD sort ?
+  - Comment on GUI ?
+ ✅ Mute all/some sound ?
+  - Different pitch sounds? ??
  ✅ Fix insertion colour issue
  Together tasks:
  ✅ Separate code into classes
