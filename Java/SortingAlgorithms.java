@@ -152,88 +152,38 @@ class SortingAlgorithms
       timer.addActionListener(timerAction);
       timer.start();
     }
-    // public static void selectionsort()
-    // {
-    //   Main.sortType = "Selection Sort";
-    //   for (int i = 0; i<Main.array.length-1; i++)
-    //     {
-    //       minValue = i;
-    //       for (int j = minValue; j<Main.array.length-1; j++)
-    //         {
-    //           if (Main.array[j]<array[minValue])
-    //           {
-    //             minValue = j;
-    //             int temp = Main.array[minValue];
-    //             Main.array[min=
-    //           }
-    //         }
-    //     }
-    // }
-    //Selection Sort
-    //Timer Complexity: (O(n^2))
-    public static void selectionSort() 
+    public static void selectionSort() throws InterruptedException
     {
-      //Sets the name of the sort and creates the timed loop pause
       Main.sortType = "Selection Sort";
-      Timer timer = new Timer(20, null);
-      ActionListener timerAction = new ActionListener()
+      for (int i = 0; i<Main.array.length-1; i++)
         {
-          //sets the starting array element at 0
-          int start = 0;
-          //timed loop begins
-          public void actionPerformed(ActionEvent e)
-          {
-            //initially sets the smallest value to the starting value
-            int minValue = start;
-            if (start==Main.array.length-1) 
+          int minValue = i;
+          for (int j = minValue; j<Main.array.length; j++)
             {
-              //checks to see if the starting value has reached the ending value, and if it has, it means that the sort has finished and thus moves on to the ending screen
-                Main.swap[start] = 1;
-                Main.panel.repaint();
-              try{
-                //creates green screen that verifies sort
-              Main.arrayCheck();
-                Main.panel.repaint();
-              }
-              catch(InterruptedException e2)
-                {
-                  e2.printStackTrace();
-                }
-              //Changes progress text to sorted and stops timed loop
-              
-              Main.sortProgress = "Sorted!";
-              System.out.println(" Sorted!");
-              ((Timer) e.getSource()).stop();
-              
+              if (Main.array[j]<Main.array[minValue])
+              {
+            	Main.swap[minValue] = 1;
+            	minValue = j;  
+            	Main.swap[minValue] = 2;
+              }             
             }
-            // scans through the entire array, increasing the 
-                minValue = start;
-                for (int j = start; j<Main.array.length; j++)
-                {
-                  if (Main.array[j]<Main.array[minValue])
-                  {
-                    minValue = j;
-                  Main.swap[minValue] = 2;
-                  Main.swap[start] = 2;
-                  int temp = Main.array[minValue];
-                  Main.array[minValue] = Main.array[start];
-                  Main.array[start] = temp;
-                  Main.arrayAccesses+=2; 
-                  Main.panel.repaint();
-                  }
-                }                 
-            Main.swap[start] = 1;
-            Main.swap[minValue] = 1;
-            Main.panel.repaint();
-            start++;  
-          }
-          
-        };
-      
-      timer.addActionListener(timerAction);
-      timer.start();
-      Main.panel.repaint();
-   }      
+         Main.swap[i] = 2;
+         Main.swap[minValue] = 2;
+         int temp = Main.array[i];
+         Main.array[i] = Main.array[minValue];
+         Main.array[minValue] = temp;
+         Main.panel.paintImmediately(Main.panel.getBounds());
+         Thread.sleep(20);
+         Main.arrayAccesses+= 2;
+         Main.swap[i] = 1;
+         Main.swap[minValue] = 1;
+         Thread.sleep(20);
+         Main.panel.paintImmediately(Main.panel.getBounds());
+        }
+       Main.arrayCheck();
+       Main.sortProgress = "Sorted!";
+       System.out.println(" Sorted!");
+    }     
     
     //Quick Sort
     //Time Complexity: (O(nLog(n)))
