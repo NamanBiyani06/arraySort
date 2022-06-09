@@ -1,3 +1,5 @@
+
+
 //Array Sort Visualizer
 //ICS3U
 //EL & NB
@@ -24,13 +26,14 @@ class Main {
 
 //declaring an array that will hold values in the Main class
 //array is 2D - one dimension holds the values and the other holds whether its being swapped
-static int[] array = new int[512/4];
-static int[] swap = new int[512/4];
-static int[] arraySorted = new int[512/4];
+static int[] array;
+static int[] swap;
+static int[] arraySorted;
 static int arrayAccesses = 0; 
 static String sortType;
 static String sortProgress = "Sort in Progress";
 static String colourTheme;
+static int numberOfElements;
 
 
 public static JPanel panel; 
@@ -39,23 +42,11 @@ public static JPanel panel;
 
 //static JSpinner spinner;
 
-public static void numberSpinner()
-{
-  JFrame f=new JFrame("Number of Elements");    
-  SpinnerModel value =  
-           new SpinnerNumberModel(128, 10, 1500,  5); 
-  JSpinner spinner = new JSpinner(value);   
-          spinner.setBounds(100,100,50,30);    
-          f.add(spinner);    
-          f.setSize(300,300);    
-          f.setLayout(null);    
-          f.setVisible(true);     
-}
 
 public int[] arrayRandomize(int[] array) throws InterruptedException
 {
   //setting the elements of the array to ordered numbers
-  for(int i = 0; i<array.length; i++)
+  for(int i = 0; i<numberOfElements; i++)
     {
       array[i] = i+1;
     }
@@ -67,9 +58,9 @@ public int[] arrayRandomize(int[] array) throws InterruptedException
   //randomizing
   Random rand = new Random();  
 
-		for (int i=0; i<array.length; i++) 
+		for (int i=0; i<numberOfElements; i++) 
     {
-		    int position = rand.nextInt(array.length);
+		    int position = rand.nextInt(numberOfElements);
 		    int temp = array[i];
 		    array[i] = array[position];
 		    array[position] = temp;
@@ -88,7 +79,7 @@ public int[] arrayRandomize(int[] array) throws InterruptedException
 
 public int[] setArray(int[] arraySorted)
 {
-  for(int i = 0; i<array.length; i++)
+  for(int i = 0; i<numberOfElements; i++)
     {
       arraySorted[i] = i+1;
     }
@@ -114,7 +105,7 @@ public void drawArray(Graphics g)
   //casting my Graphics into a Graphics2D
   Graphics2D g2 = (Graphics2D) g;
   
-  for(int i = array.length-1; i>-1; i--)
+  for(int i = numberOfElements-1; i>-1; i--)
     {
       //setting colours
       String black = new String("000000");
@@ -124,8 +115,8 @@ public void drawArray(Graphics g)
       String blue = new String("#00FFFF");
 
       double jump = 360.0/(50000*1.0);
-      Color[] colors = new Color[128];
-      for(int j = 0; j< array.length; j++)
+      Color[] colors = new Color[numberOfElements];
+      for(int j = 0; j< numberOfElements; j++)
         {
           colors[j] = Color.getHSBColor((float) ((jump*j)), 1.0f, 1.0f );
         }
@@ -141,11 +132,18 @@ public void drawArray(Graphics g)
           g2.setColor(colors[array[i]-1]);
         }
       }
+
+        g2.fillRect(i*Math.round(512/numberOfElements), 360 - Math.round(array[i]*(256/numberOfElements)), Math.round(384/numberOfElements), array[i]*Math.round(256/numberOfElements));
+        //adding black border
+         g2.setColor(Color.decode(black));
+      g2.drawRect(i*Math.round(512/numberOfElements)-1, 360 - array[i]*Math.round(256/numberOfElements)-1, Math.round(384/numberOfElements)+1, array[i]*Math.round(256/numberOfElements));
+        
       
-      g2.fillRect(i*4, 360 - array[i]*2, 3, array[i]*2); 
-      //adding black border
-      g2.setColor(Color.decode(black));
-      g2.drawRect(i*4-1, 360 - array[i]*2-1, 4, array[i]*2);
+      
+      // g2.fillRect(i*4, 360 - array[i]*2, 3, array[i]*2); 
+      // //adding black border
+      // g2.setColor(Color.decode(black));
+      // g2.drawRect(i*4-1, 360 - array[i]*2-1, 4, array[i]*2);
       
 
       if(swap[i] == 2)
@@ -154,27 +152,30 @@ public void drawArray(Graphics g)
         {
           System.out.println("L");
         }
-        g2.setColor(Color.decode(red));
-        g2.fillRect(i*4, 360 - array[i]*2, 3, array[i]*2);
-        //adding white border
-        g2.setColor(Color.decode(black));
-        g2.drawRect(i*4-1, 360 - array[i]*2-1, 4, array[i]*2);
-      }
+        	 g2.setColor(Color.decode(red));
+        	 g2.fillRect(i*512/numberOfElements, 360 - array[i]*(256/numberOfElements), 384/numberOfElements, array[i]*(256/numberOfElements));
+             //adding black border
+              g2.setColor(Color.decode(black));
+              g2.drawRect(i*512/numberOfElements-1, 360 - 256/numberOfElements-1, 384/numberOfElements+1, 256/numberOfElements);
+        
+        }
+       
+      
       else if(swap[i] == 3)
       {
         g2.setColor(Color.decode(green));
-        g2.fillRect(i*4, 360 - array[i]*2, 3, array[i]*2);
-        //adding white border
-        g2.setColor(Color.decode(black));
-        g2.drawRect(i*4-1, 360 - array[i]*2-1, 4, array[i]*2);
+        g2.fillRect(i*512/numberOfElements, 360 - array[i]*(256/numberOfElements), 384/numberOfElements, array[i]*(256/numberOfElements));
+        //adding black border
+         g2.setColor(Color.decode(black));
+         g2.drawRect(i*512/numberOfElements-1, 360 - 256/numberOfElements-1, 384/numberOfElements+1, 256/numberOfElements);
       }
       else if(swap[i] == 4)
       {
         g2.setColor(Color.decode(blue));
-        g2.fillRect(i*4, 360 - array[i]*2, 3, array[i]*2);
-        //adding white border
-        g2.setColor(Color.decode(black));
-        g2.drawRect(i*4-1, 360 - array[i]*2-1, 4, array[i]*2);
+        g2.fillRect(i*512/numberOfElements, 360 - array[i]*(256/numberOfElements), 384/numberOfElements, array[i]*(256/numberOfElements));
+        //adding black border
+         g2.setColor(Color.decode(black));
+         g2.drawRect(i*512/numberOfElements-1, 360 - 256/numberOfElements-1, 384/numberOfElements+1, 256/numberOfElements);
       }
       
 
@@ -211,7 +212,7 @@ public Main() throws InterruptedException
 
   panel = new JPanel() {
     @Override
-    //paint section that is recalled everytime panel.repaint() is called
+    //paint section that is recalled every time panel.repaint() is called
     public void paint(Graphics g) {
       Graphics2D g2 = (Graphics2D) g;
       super.paint(g);
@@ -225,6 +226,7 @@ public Main() throws InterruptedException
   //f.pack();
   f.setLocationRelativeTo(null);
   f.setVisible(true);
+  f.setResizable(false);
 
 
 
@@ -234,11 +236,19 @@ public Main() throws InterruptedException
     @Override
     public void run()
     {
-     try
+     try 
        {
-         int inputValue = Integer.parseInt(JOptionPane.showInputDialog(null, "Please input a value", "Number of Elements", JOptionPane.DEFAULT_OPTION));
-         
+         do{
+          numberOfElements = Integer.parseInt(JOptionPane.showInputDialog(null, "Number of Elements", "Range is Limited from 1-256", JOptionPane.DEFAULT_OPTION));  
+         }while(!(numberOfElements<257 && numberOfElements>0));
+     
+         //try nowEVAN TRY
          //put in method later
+         array = new int[numberOfElements];
+         swap = new int[numberOfElements];
+         arraySorted = new int[numberOfElements];
+         Object[] soundOptions = {"Beep", "No sound"};
+         Object soundChoice = JOptionPane.showInputDialog(null, "Select a sound", "Sound Selection",JOptionPane.INFORMATION_MESSAGE, null, soundOptions, soundOptions[0]);
          Object[] AlgoOptions = {"Bubble Sort", "Selection Sort", "Insertion Sort", "Quick Sort", "Merge Sort", "Cocktail Sort", "Bogo Sort"};
   Object AlgoChoice = JOptionPane.showInputDialog(null, "Select an Algorithm", "Algorithm Selection", JOptionPane.ERROR_MESSAGE, null, AlgoOptions, AlgoOptions[0]); 
          String strAlgoChoice = (String) AlgoChoice;
@@ -268,11 +278,11 @@ public Main() throws InterruptedException
          }
          else if(strAlgoChoice.equals("Quick Sort"))
          {
-           SortingAlgorithms.quickSort(0, 127);
+           SortingAlgorithms.quickSort(0, numberOfElements-1);
          }
          else if(strAlgoChoice.equals("Merge Sort"))
          {
-           SortingAlgorithms.mergeSort(array, 0, 127); 
+           SortingAlgorithms.mergeSort(array, 0, numberOfElements-1); 
          }
          else if(strAlgoChoice.equals("Cocktail Sort"))
          {
@@ -289,6 +299,7 @@ public Main() throws InterruptedException
          e.printStackTrace();
        }
     }
+    
   });
 }
 
@@ -316,7 +327,7 @@ public static void arrayCheck() throws InterruptedException
 {
   System.out.println("checking array like rnrn");
   
-  for(int i = 0; i<array.length; i++)
+  for(int i = 0; i<numberOfElements; i++)
     {
       Thread.sleep(10);
       panel.paintImmediately(0, 0, panel.getWidth(), panel.getHeight());
@@ -338,7 +349,8 @@ public static void beep(String filename)
   catch (Exception exc)
   {
       exc.printStackTrace(System.out);
-  }
+  } 
 }
 }
+
 
