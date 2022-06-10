@@ -34,6 +34,7 @@ static String sortType;
 static String sortProgress = "Sort in Progress";
 static String colourTheme;
 static int numberOfElements;
+static boolean muteChoice = false;
 
 
 public static JPanel panel; 
@@ -77,6 +78,7 @@ public int[] arrayRandomize(int[] array) throws InterruptedException
 		return array;
 }
 
+//sets array to 1,2,3,4...
 public int[] setArray(int[] arraySorted)
 {
   for(int i = 0; i<numberOfElements; i++)
@@ -86,6 +88,7 @@ public int[] setArray(int[] arraySorted)
   return arraySorted;
 }
 
+//Swap array contains the colours for when painting the bars
 public int[] swapSet(int[] swap)
 {
   //setting all elements of swap to 1
@@ -132,11 +135,14 @@ public void drawArray(Graphics g)
           g2.setColor(colors[array[i]-1]);
         }
       }
-
-        g2.fillRect(i*Math.round(512/numberOfElements), 360 - Math.round(array[i]*(256/numberOfElements)), Math.round(384/numberOfElements), array[i]*Math.round(256/numberOfElements));
+        g2.fillRect(i*512/numberOfElements, 360 - array[i]*(256/numberOfElements), 384/numberOfElements, array[i]*(256/numberOfElements));
         //adding black border
          g2.setColor(Color.decode(black));
-      g2.drawRect(i*Math.round(512/numberOfElements)-1, 360 - array[i]*Math.round(256/numberOfElements)-1, Math.round(384/numberOfElements)+1, array[i]*Math.round(256/numberOfElements));
+         g2.drawRect(i*512/numberOfElements-1, 360 - 256/numberOfElements-1, 384/numberOfElements+1, 256/numberOfElements);
+      //   g2.fillRect(i*Math.round(512/numberOfElements), 360 - Math.round(array[i]*(256/numberOfElements)), Math.round(384/numberOfElements), array[i]*Math.round(256/numberOfElements));
+      //   //adding black border
+      //    g2.setColor(Color.decode(black));
+      // g2.drawRect(i*Math.round(512/numberOfElements)-1, 360 - array[i]*Math.round(256/numberOfElements)-1, Math.round(384/numberOfElements)+1, array[i]*Math.round(256/numberOfElements));
         
       
       
@@ -145,7 +151,7 @@ public void drawArray(Graphics g)
       // g2.setColor(Color.decode(black));
       // g2.drawRect(i*4-1, 360 - array[i]*2-1, 4, array[i]*2);
       
-
+      //if swap[i] is 2, bar needs to be painted red
       if(swap[i] == 2)
       {
         if(array[i]*2 == 0)
@@ -182,6 +188,8 @@ public void drawArray(Graphics g)
       g2.setColor(Color.decode(white));
     }
 }
+
+// drawing the text on the screen
 public void drawHUD(Graphics g)
 {
   Graphics2D g2 = (Graphics2D) g;
@@ -207,7 +215,7 @@ public Main() throws InterruptedException
   // Creating the JFrame
   JFrame f = new JFrame("Array Sorting Visualizer");
   f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-  f.setSize(512, 380);
+  f.setSize(512+15, 392);
   f.setVisible(true);
 
   panel = new JPanel() {
@@ -226,8 +234,8 @@ public Main() throws InterruptedException
   //f.pack();
   f.setLocationRelativeTo(null);
   f.setVisible(true);
-  f.setResizable(false);
-
+  f.setResizable(true);
+  f.setDefaultLookAndFeelDecorated(true);
 
 
   //calling methods from EDT
@@ -242,19 +250,24 @@ public Main() throws InterruptedException
           numberOfElements = Integer.parseInt(JOptionPane.showInputDialog(null, "Number of Elements", "Range is Limited from 1-256", JOptionPane.DEFAULT_OPTION));  
          }while(!(numberOfElements<257 && numberOfElements>0));
      
-         //try nowEVAN TRY
-         //put in method later
          array = new int[numberOfElements];
          swap = new int[numberOfElements];
          arraySorted = new int[numberOfElements];
          Object[] soundOptions = {"Beep", "No sound"};
          Object soundChoice = JOptionPane.showInputDialog(null, "Select a sound", "Sound Selection",JOptionPane.INFORMATION_MESSAGE, null, soundOptions, soundOptions[0]);
+         if (soundChoice.equals(soundOptions[0]))
+         {
+           muteChoice = false;
+         }
+         else {
+           muteChoice = true;
+         }
          Object[] AlgoOptions = {"Bubble Sort", "Selection Sort", "Insertion Sort", "Quick Sort", "Merge Sort", "Cocktail Sort", "Bogo Sort"};
-  Object AlgoChoice = JOptionPane.showInputDialog(null, "Select an Algorithm", "Algorithm Selection", JOptionPane.ERROR_MESSAGE, null, AlgoOptions, AlgoOptions[0]); 
+  Object AlgoChoice = JOptionPane.showInputDialog(null, "Select an Algorithm", "Algorithm Selection", JOptionPane.INFORMATION_MESSAGE, null, AlgoOptions, AlgoOptions[0]); 
          String strAlgoChoice = (String) AlgoChoice;
 
          Object[] colourThemes = {"White", "Rainbow"};
-        colourTheme = (String) JOptionPane.showInputDialog(null, "Select a Colour Theme", "Theme Selection", JOptionPane.ERROR_MESSAGE, null, colourThemes, colourThemes[0]); 
+        colourTheme = (String) JOptionPane.showInputDialog(null, "Select a Colour Theme", "Theme Selection", JOptionPane.INFORMATION_MESSAGE, null, colourThemes, colourThemes[0]); 
          
          //randomizing and setting the arrays
           array = arrayRandomize(array);
@@ -263,7 +276,7 @@ public Main() throws InterruptedException
           panel.repaint();
 
           sortProgress = "Sort in Progress";
-//          //Sorting Algorithms
+          //Sorting Algorithms
          if(strAlgoChoice.equals("Bubble Sort"))
          {
            SortingAlgorithms.bubbleSort();
@@ -279,6 +292,8 @@ public Main() throws InterruptedException
          else if(strAlgoChoice.equals("Quick Sort"))
          {
            SortingAlgorithms.quickSort(0, numberOfElements-1);
+           arrayCheck();
+           sortProgress = "Sorted!";
          }
          else if(strAlgoChoice.equals("Merge Sort"))
          {
@@ -303,7 +318,7 @@ public Main() throws InterruptedException
   });
 }
 
-//diverting to an alternate main so I can use static variables
+//diverting to an alternate main so I can use static variables and run on EDT thread
 public static void main(String[] args) throws InterruptedException 
 {
   SwingUtilities.invokeLater(new Runnable() 
@@ -338,6 +353,7 @@ public static void arrayCheck() throws InterruptedException
       }
     }
 }
+
 public static void beep(String filename)
 {
   try
