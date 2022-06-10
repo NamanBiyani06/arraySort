@@ -1,3 +1,5 @@
+
+
 //imports
 import java.util.*;
 import java.io.*;
@@ -37,14 +39,22 @@ class SortingAlgorithms
         @Override
         public void actionPerformed(ActionEvent e)
         {
-          if(i>=Main.array.length-1)
+          if(i>=Main.numberOfElements-1)
           {
-            //arrayCheck();
-            Main.sortProgress = "Sorted!";
-            System.out.println("Sorted!");
-            ((Timer) e.getSource()).stop();
+
+              Main.sortProgress = "Sorted!";
+              System.out.println("Sorted!");
+              ((Timer) e.getSource()).stop();
+        	  try{
+              Main.arrayCheck();
+            }
+            catch(Exception eee)
+              {
+                
+              }
+
           }
-          if(j>=Main.array.length-1-i)
+          if(j>=Main.numberOfElements-1-i)
           {
             j = 0;
             i++;
@@ -62,7 +72,7 @@ class SortingAlgorithms
           Main.panel.repaint();
           Main.swap[j] = 1;
           j++;
-          if(j!=512/4-1)
+          if(j!=Main.numberOfElements-1)
           {
             Main.swap[j+1] = 1; 
           }
@@ -84,7 +94,7 @@ class SortingAlgorithms
           {
   
       int startingIndex = 0;
-      int endingIndex = Main.array.length - 1;
+      int endingIndex = Main.numberOfElements - 1;
       boolean sorted = false;
       int temp;
   
@@ -104,6 +114,7 @@ class SortingAlgorithms
               Main.swap[i] = 2;
               Main.swap[i+1] = 2;
               Main.panel.paintImmediately(Main.panel.getBounds());
+              Sound.beep();
             }
             Main.swap[i] = 1;
             Main.swap[i+1] = 1;
@@ -112,6 +123,7 @@ class SortingAlgorithms
     
         if(sorted == true)
         {
+            ((Timer) e.getSource()).stop();
           try
           {
             Main.arrayCheck();
@@ -123,7 +135,7 @@ class SortingAlgorithms
           Main.sortProgress = "Sorted!";
           System.out.println("Sorted!");
           Main.panel.repaint(); 
-          ((Timer) e.getSource()).stop();
+
         }
     
         sorted = true;
@@ -141,6 +153,7 @@ class SortingAlgorithms
               Main.swap[i] = 2;
               Main.swap[i+1] = 2;
               Main.panel.paintImmediately(Main.panel.getBounds());
+              Sound.beep();
             }
             Main.swap[i] = 1;
             Main.swap[i+1] = 1;
@@ -155,10 +168,10 @@ class SortingAlgorithms
     public static void selectionSort() throws InterruptedException
     {
       Main.sortType = "Selection Sort";
-      for (int i = 0; i<Main.array.length-1; i++)
+      for (int i = 0; i<Main.numberOfElements-1; i++)
         {
           int minValue = i;
-          for (int j = minValue; j<Main.array.length; j++)
+          for (int j = minValue; j<Main.numberOfElements; j++)
             {
               if (Main.array[j]<Main.array[minValue])
               {
@@ -173,16 +186,25 @@ class SortingAlgorithms
          Main.array[i] = Main.array[minValue];
          Main.array[minValue] = temp;
          Main.panel.paintImmediately(Main.panel.getBounds());
+         Sound.beep();
          Thread.sleep(20);
          Main.arrayAccesses+= 2;
          Main.swap[i] = 1;
          Main.swap[minValue] = 1;
          Thread.sleep(20);
          Main.panel.paintImmediately(Main.panel.getBounds());
+
         }
        Main.arrayCheck();
        Main.sortProgress = "Sorted!";
        System.out.println(" Sorted!");
+      try{
+              Main.arrayCheck();
+            }
+            catch(Exception eee)
+              {
+                
+              }
     }     
     
     //Quick Sort
@@ -198,6 +220,7 @@ class SortingAlgorithms
         quickSort(low, partition - 1);
         quickSort(partition + 1, high);
       }
+
     }
   
     //partition for quick sort
@@ -221,6 +244,7 @@ class SortingAlgorithms
             int temp = Main.array[i];
             Main.array[i] = Main.array[j];
             Main.array[j] = temp;
+            Main.arrayAccesses += 2;
             //Main.swap[i] = 2;
             //Main.swap[j] = 2;
             Main.panel.paintImmediately(Main.panel.getBounds()); 
@@ -232,6 +256,7 @@ class SortingAlgorithms
       int temp_two = Main.array[i + 1];
       Main.array[i+1] = Main.array[high];
       Main.array[high] = temp_two;
+      Main.arrayAccesses += 2;
       //Main.swap[i+1] = 2;
       //Main.swap[high] = 2;
       Main.panel.paintImmediately(Main.panel.getBounds());
@@ -244,7 +269,7 @@ class SortingAlgorithms
     {
       int arrayOneLength=(m-l+1);
       int arrayTwoLength=(r-m);
-  
+
       int[] L = new int[arrayOneLength];
       int[] R = new int[arrayTwoLength];
       for (int i = 0; i<arrayOneLength; i++)
@@ -270,7 +295,7 @@ class SortingAlgorithms
             Main.swap[key] = 2;
             Main.panel.paintImmediately(Main.panel.getBounds());
             Thread.sleep(10);
-            //Sound.beep();
+            Sound.beep();
             Main.swap[key] = 1;
             Main.panel.paintImmediately(Main.panel.getBounds());
             Main.arrayAccesses+= 2;            
@@ -283,10 +308,11 @@ class SortingAlgorithms
             Thread.sleep(10);
             Main.swap[key] = 2;
             Main.panel.paintImmediately(Main.panel.getBounds());
-            //Sound.beep();
+            Sound.beep();
             Main.swap[key] = 1;
             Main.panel.paintImmediately(Main.panel.getBounds());
             Main.arrayAccesses+= 2;
+            Sound.beep();
           }
           key++;
         }
@@ -296,7 +322,7 @@ class SortingAlgorithms
           Main.array[key] = L[a];
           
           a++;
-          //Sound.beep();
+          Sound.beep();
           Main.swap[key] = 2;
           Main.panel.paintImmediately(Main.panel.getBounds());
           Thread.sleep(10);
@@ -313,12 +339,16 @@ class SortingAlgorithms
           Thread.sleep(10);
           Main.swap[key] = 2;
           Main.panel.paintImmediately(Main.panel.getBounds());
-          //Sound.beep();
+          Sound.beep();
           Main.swap[key] = 1;
           Main.panel.paintImmediately(Main.panel.getBounds());
           Main.arrayAccesses+= 2;
           key++;
         }
+      if (l == 0&& r == Main.numberOfElements-1) {
+    	  Main.arrayCheck();
+    	  Main.sortProgress = "Sorted!";
+      }
     }
      public static void mergeSort(int[] array, int l, int r) throws InterruptedException
     {
@@ -358,7 +388,7 @@ class SortingAlgorithms
       {
         public void actionPerformed(ActionEvent e)
           {
-            for (int i = 1; i<Main.array.length; i++)
+            for (int i = 1; i<Main.numberOfElements; i++)
               {
                 int j = i-1;
                 int k = i;
@@ -371,7 +401,9 @@ class SortingAlgorithms
                   int temp = Main.array[j];
                   Main.array[j] = Main.array[k];
                   Main.array[k] = temp;
-                  Main.arrayAccesses+=2;                Main.panel.paintImmediately(Main.panel.getBounds());
+                  Main.arrayAccesses+=2;          
+                  Sound.beep();
+                  Main.panel.paintImmediately(Main.panel.getBounds());
                   Main.swap[k] = 1;
                   Main.swap[j] = 1;
                   Main.panel.paintImmediately(Main.panel.getBounds());
@@ -383,7 +415,7 @@ class SortingAlgorithms
                   }
   
                 }
-                if (i==Main.array.length-1)
+                if (i==Main.numberOfElements-1)
                 {
                   try
                     {
@@ -419,12 +451,12 @@ class SortingAlgorithms
           {
             boolean sorted = true;
   
-            for(int i = 0; i<Main.array.length-1; i++)
+            for(int i = 0; i<Main.numberOfElements-1; i++)
               {
                 if(Main.array[i]>Main.array[i+1])
                 {
                   sorted = false;
-                  for(int j = 0; j<Main.array.length; j++)
+                  for(int j = 0; j<Main.numberOfElements; j++)
                     {
                       Main.swap[j] = 1;
                     }
@@ -439,6 +471,13 @@ class SortingAlgorithms
   
             if(sorted)
             {
+            	try {
+            		Main.arrayCheck();
+            	}
+            	catch (Exception c)
+            	{
+            		
+            	}
               Main.sortProgress = "Sorted!";
               System.out.println(" Sorted!");
               ((Timer) e.getSource()).stop();
@@ -448,14 +487,15 @@ class SortingAlgorithms
               //randomizing
               Random rand = new Random();  
            
-          		for (int i=0; i<Main.array.length; i++) 
+          		for (int i=0; i<Main.numberOfElements; i++) 
                 {
                   Main.arrayAccesses++;
-          		    int position = rand.nextInt(Main.array.length);
+          		    int position = rand.nextInt(Main.numberOfElements);
           		    int temp = Main.array[i];
           		    Main.array[i] = Main.array[position];
           		    Main.array[position] = temp;
           		  }
+          		Sound.beep();
               Main.panel.repaint();
             }
             
